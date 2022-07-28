@@ -38,7 +38,7 @@ public class GraphAdjacencyList<T> {
 			
 		}
 		if (adjacencyList.containsKey(v2) == false)  {
-			ArrayList<Pair<T, Double>> edges = new ArrayList();
+			ArrayList<Pair<T, Double>> edges = new ArrayList<Pair<T, Double>>();
 			adjacencyList.put(v2, edges);
 		}
 		return true;
@@ -90,10 +90,53 @@ public class GraphAdjacencyList<T> {
 			
 			return true;
 		} 
-		
 		return addEdge(v1, v2, weight);
+	}
+	
+	public Boolean removeVertex(T vertex) {
+		adjacencyList.remove(vertex);
+		return removeEdge(vertex);
+	}
+	
+	public Boolean removeEdge(T vertex) {
 		
+		for (T key: adjacencyList.keySet()) {
+			ArrayList<Pair<T, Double>> newedges = new ArrayList<Pair<T, Double>> ();
+			ArrayList<Pair<T, Double>> edges = adjacencyList.get(key);
+			for (Pair<T, Double> edge: edges) {
+				if (edge.getFirst() != vertex) {
+					newedges.add(edge);
+				}
+			}
+			adjacencyList.put(key, newedges);
+		}
 		
+		return true;
+	}
+	
+	public Boolean removeEdge(T vertex, T vertex2) {
+		if (adjacencyList.get(vertex) != null) {
+			ArrayList<Pair<T, Double>> newedges = new ArrayList<Pair<T, Double>> ();
+			ArrayList<Pair<T, Double>> edges = adjacencyList.get(vertex);
+			for (Pair<T, Double> edge: edges) {
+				if (edge.getFirst() != vertex2) {
+					newedges.add(edge);
+				}
+			}
+			adjacencyList.put(vertex, newedges);
+		}
+		if (adjacencyList.get(vertex2) != null) {
+			ArrayList<Pair<T, Double>> newedges = new ArrayList<Pair<T, Double>> ();
+			ArrayList<Pair<T, Double>> edges = adjacencyList.get(vertex2);
+			for (Pair<T, Double> edge: edges) {
+				if (edge.getFirst() != vertex) {
+					newedges.add(edge);
+				}
+			}
+			adjacencyList.put(vertex2, newedges);
+		}	
+		
+		return true;
 	}
 	
 	public ArrayList<Pair<T, Double>> getNeighbors(T vertex) {
@@ -119,10 +162,10 @@ public class GraphAdjacencyList<T> {
 		return current_minNode;
 	}
 	
-	public HashMap<T, Pair<Double, T>> dijkstra(T source) {
+	private HashMap<T, Pair<Double, T>> dijkstra(T source) {
 		
 		
-		HashMap<T, Pair<Double, T>> visited = new HashMap<>(); // whether vertex T has been visited
+		HashMap<T, Pair<Double, T>> visited = new HashMap<>(); // vertex and <Distance, Previous Vertex>
 		HashMap<T, Pair<Double, T>> unvisited = new HashMap<>(); // vertex and distance of previous vertex
 		
 		for (T vertex: adjacencyList.keySet()) {

@@ -20,7 +20,9 @@ public class Driver {
 		graph.addEdge("C", "E", 9.0, true);
 		graph.addEdge("D", "E", 2.0, true);
 		System.out.println(graph);
-		
+		graph.removeEdge("A", "B");
+		System.out.println(graph);
+		System.out.println(graph.shortestPath("B", "C"));
 	}
 
 }
